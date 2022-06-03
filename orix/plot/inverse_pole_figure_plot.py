@@ -111,6 +111,7 @@ class InversePoleFigurePlot(StereographicPlot):
         sigma: float = 5,
         log: bool = False,
         colorbar: bool = True,
+        weights: Optional[np.ndarray] = None,
         **kwargs: Any,
     ):
         """Compute the Inverse Pole Density Function (IPDF) of vectors
@@ -132,6 +133,9 @@ class InversePoleFigurePlot(StereographicPlot):
         colorbar
             If True a colorbar is shown alongside the IPDF plot.
             Default is True.
+        weights
+            The weights for the individual vectors. Default is None, in
+            which case each vector is 1.
         kwargs
             Keyword arguments passed to
             :meth:`matplotlib.axes.Axes.pcolormesh`.
@@ -150,6 +154,7 @@ class InversePoleFigurePlot(StereographicPlot):
             hemisphere=self.hemisphere,
             symmetry=self._symmetry,
             mrd=True,
+            weights=weights,
         )
 
         new_kwargs = dict(zorder=ZORDER["mesh"], clip_on=True)

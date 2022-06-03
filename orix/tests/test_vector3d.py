@@ -450,6 +450,32 @@ class TestSpareNotImplemented:
         "cantmul" * vector
 
 
+class TestVector3dInversePoleDensityFunction:
+    def test_ipdf_plot(self):
+        v = Vector3d(np.random.randn(1_000, 3)).unit
+        fig = v.inverse_pole_density_function(
+            symmetry=symmetry.Th,
+            return_figure=True,
+            colorbar=True,
+            show_hemisphere_label=True,
+        )
+        assert len(fig.axes) == 2  # plot and colorbar
+        qm1 = [isinstance(c, QuadMesh) for c in fig.axes[0].collections]
+        assert any(qm1)
+        plt.close(fig)
+
+    def test_ipdf_plot_hemisphere_raises(self):
+        with pytest.raises(ValueError, match="Hemisphere must be either "):
+            v = Vector3d(np.random.randn(1_000, 3)).unit
+            fig = v.inverse_pole_density_function(
+                symmetry=symmetry.Th,
+                return_figure=True,
+                colorbar=True,
+                hemisphere="test",
+            )
+            plt.close(fig)
+
+
 class TestVector3dPoleDensityFunction:
     def test_pdf_plot_colorbar(self):
         v = Vector3d(np.random.randn(10_000, 3)).unit
